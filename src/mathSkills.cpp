@@ -15,7 +15,6 @@ Data::Data(const std::string &FileName)
             file.close();
             std::exit(1);
         }
-
         file.close();
         this->computeStatistics();
     }
@@ -34,41 +33,70 @@ Data::~Data()
 void Data::loadData(std::ifstream &File)
 {
     std::string line;
+    char *end;
 
     while (std::getline(File, line))
     {
-        char *end;
-        this->_data.push_back(std::strtod(line.c_str(), &end));
-        if (*end) {
+        auto tmp = std::strtod(line.c_str(), &end);
+        if (tmp != 0)
+        {
+            this->_data.push_back(tmp);
+        }
+        if (*end)
+        {
             throw InvalidInputException();
         }
     }
+    this->_data.shrink_to_fit();
+    std::sort(this->_data.begin(), this->_data.end());
 }
 
 void Data::computeStatistics()
 {
+    int len = this->_data.size();
+    double tmp = 0;
+    double Average = 0;
+    double squaredDifferences = 0;
+    double variance = 0;
+    if (len % 2 != 0)
+    {
+        this->_median = std::round(this->_data[len / 2]);
+    }
+    else
+    {
+        this->_median = std::floor((this->_data[len / 2] + this->_data[(len / 2) + 1]) / 2);
+    }
     for (const auto &num : this->_data)
     {
-        std::cout << num << std::endl;
+        tmp += num;
     }
+    Average = tmp / len;
+    this->_average = std::round(Average);
+    for (const auto &num : this->_data)
+    {
+        squaredDifferences += std::pow(num - Average, 2);
+    }
+    variance = squaredDifferences / len;
+    this->_variance = std::round(variance);
+    this->_standardDeviation = std::round(std::sqrt(variance));
 }
 
-int Data::getAverage() const
+long Data::getAverage() const
 {
     return this->_average;
 }
 
-int Data::getMedian() const
+long Data::getMedian() const
 {
     return this->_median;
 }
 
-int Data::getVariance() const
+long Data::getVariance() const
 {
     return this->_variance;
 }
 
-int Data::getStandardDeviation() const
+long Data::getStandardDeviation() const
 {
     return this->_standardDeviation;
 }

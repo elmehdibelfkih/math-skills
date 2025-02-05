@@ -3,15 +3,17 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <algorithm>
+#include <cmath>
 
 class Data
 {
 private:
     std::vector<double> _data;
-    int _average;
-    int _median;
-    int _variance;
-    int _standardDeviation;
+    long _average;
+    long _median;
+    long _variance;
+    long _standardDeviation;
 
     explicit Data(const std::string &FileName);
     void loadData(std::ifstream &File);
@@ -24,10 +26,10 @@ public:
     Data(const Data &) = delete;
     Data &operator=(const Data &) = delete;
 
-    int getAverage() const;
-    int getMedian() const;
-    int getVariance() const;
-    int getStandardDeviation() const;
+    long getAverage() const;
+    long getMedian() const;
+    long getVariance() const;
+    long getStandardDeviation() const;
     class InvalidInputException : public std::exception
     {
     public:

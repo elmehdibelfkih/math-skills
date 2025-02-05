@@ -9,6 +9,9 @@ int main(int argc, char *argv[])
         return 1;
     }
     Data &population = Data::get_instance((std::string)argv[1]);
-    population.getAverage();
+    std::cout << "Average: " << population.getAverage() << std::endl;
+    std::cout << "Median: " << population.getMedian() << std::endl;
+    std::cout << "Variance: " << population.getVariance() << std::endl;
+    std::cout << "Standard Deviation: " << population.getStandardDeviation() << std::endl;
     return 0;
 }
