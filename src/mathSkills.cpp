@@ -54,18 +54,15 @@ void Data::loadData(std::ifstream &File)
 void Data::computeStatistics()
 {
     int len = this->_data.size();
+    if (len == 0)
+    {
+        return;
+    }
     double tmp = 0;
     double Average = 0;
     double squaredDifferences = 0;
-    double variance = 0;
-    if (len % 2 != 0)
-    {
-        this->_median = std::round(this->_data[len / 2]);
-    }
-    else
-    {
-        this->_median = std::floor((this->_data[len / 2] + this->_data[(len / 2) + 1]) / 2);
-    }
+
+    this->_median = std::round((this->_data[len / 2] + this->_data[(len / 2) + (len % 2) - 1]) / 2.0);
     for (const auto &num : this->_data)
     {
         tmp += num;
@@ -76,7 +73,7 @@ void Data::computeStatistics()
     {
         squaredDifferences += std::pow(num - Average, 2);
     }
-    variance = squaredDifferences / len;
+    double variance = squaredDifferences / len;
     this->_variance = std::round(variance);
     this->_standardDeviation = std::round(std::sqrt(variance));
 }

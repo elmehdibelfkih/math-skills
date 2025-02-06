@@ -9,7 +9,7 @@
 class Data
 {
 private:
-    std::vector<double> _data;
+    std::vector<float> _data;
     long _average;
     long _median;
     long _variance;
